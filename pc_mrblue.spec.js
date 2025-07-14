@@ -86,9 +86,9 @@ test('이메일 계정 로그인', async ({ page }) => {
   await page.waitForLoadState('networkidle');
   await page.getByRole('link', { name: '로그인' }).click();
   await page.getByRole('textbox', { name: '아이디' }).click();
-  await page.getByRole('textbox', { name: '아이디' }).fill('wenyamaro@naver.com');
+  await page.getByRole('textbox', { name: '아이디' }).fill('npayuser_live@yopmail.com');
   await page.getByRole('textbox', { name: '비밀번호' }).click();
-  await page.getByRole('textbox', { name: '비밀번호' }).fill('f8611421!');
+  await page.getByRole('textbox', { name: '비밀번호' }).fill('1234');
   await page.locator('#loginPageForm').getByRole('link', { name: '로그인', exact: true }).click();
 });
 
