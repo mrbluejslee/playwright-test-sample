@@ -174,7 +174,6 @@ test('웹툰/연재', async ({ page }) => {
   await page.getByRole('link', { name: '열흘' }).click();
 });
 
-/*
 test('웹툰/오리지널', async ({ page }) => {
   test.setTimeout(120000);
   
@@ -264,7 +263,6 @@ test('웹툰/장르', async ({ page }) => {
   await page.locator('.btn-next').click();
   await page.locator('.btn-last').click();
   await page.locator('.btn-first').click();
-  await page.getByRole('link', { name: '최신순' }).click();
   await page.getByRole('link', { name: '제목순' }).click();
   await page.getByRole('link', { name: '인기순' }).click();
   await page.getByRole('link', { name: '리뷰수순' }).click();
@@ -308,9 +306,9 @@ test('웹툰/완결', async ({ page }) => {
   const page1Promise = page.waitForEvent('popup');
   await page.locator('.banner-visual > ul > li > a').first().click();
   const page1 = await page1Promise;
+  await page.goBack();
   await page.getByRole('link', { name: '이전으로' }).click();
   await page.getByRole('link', { name: '다음으로' }).click();
-  await page.getByRole('link', { name: '최신순' }).click();
   await page.getByRole('link', { name: '제목순' }).click();
   await page.getByRole('link', { name: '인기순' }).click();
   await page.getByRole('link', { name: '리뷰수순' }).click();
@@ -327,6 +325,7 @@ test('웹툰/완결', async ({ page }) => {
   await page.locator('.btn-first').click();
 });
 
+/*
 test('만화/추천', async ({ page }) => {
   test.setTimeout(120000);
   // 응답 상태 체크용 리스너
@@ -356,22 +355,18 @@ test('만화/추천', async ({ page }) => {
   const page1Promise = page.waitForEvent('popup');
   await page.locator('.banner-visual > ul > li > a').first().click();
   const page1 = await page1Promise;
+  await page.goBack();
   await page.getByRole('link', { name: '실시간랭킹' }).click();
-  await page.goto('https://www.mrblue.com/comic');
+  await page.goBack();
   await page.getByRole('link', { name: '정액제만화' }).click();
-  await page.goto('https://www.mrblue.com/comic');
+  await page.goBack();
   await page.getByRole('link', { name: '신작 캘린더' }).click();
-  await page.goto('https://www.mrblue.com/comic');
+  await page.goBack();
   await page.getByRole('link', { name: '특가세트', exact: true }).click();
-  await page.goto('https://www.mrblue.com/comic');
-  await page.getByRole('link', { name: '에로특가존' }).click();
-  await page.goto('https://www.mrblue.com/comic');
-  await page.getByRole('link', { name: '무협 전권 무료' }).click();
-  await page.goto('https://www.mrblue.com/comic');
+  await page.goBack();
   await page.locator('.control-box > .btn-prev').first().click();
   await page.locator('.control-box > .btn-next').first().click();
   await page.locator('#recent_update_box').getByRole('link', { name: '더보기' }).click();
-  await page.goto('https://www.mrblue.com/comic');
   await page.getByRole('link', { name: 'BL' }).nth(3).click();
   await page.getByRole('link', { name: '성인', exact: true }).nth(1).click();
   await page.getByRole('link', { name: '무협', exact: true }).nth(4).click();
@@ -864,7 +859,6 @@ test('만화/장르', async ({ page }) => {
   await page.locator('.btn-first').click();
 });
 
-/*
 test('만화/무협관', async ({ page }) => {
   test.setTimeout(600000);
   // 응답 상태 체크용 리스너  
