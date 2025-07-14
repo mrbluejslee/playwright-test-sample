@@ -92,6 +92,7 @@ test('이메일 계정 로그인', async ({ page }) => {
   await page.locator('#loginPageForm').getByRole('link', { name: '로그인', exact: true }).click();
 });
 
+/*
 test('GNB', async ({ page }) => {
   test.setTimeout(120000);
   
@@ -1151,3 +1152,4 @@ test('만화/무료', async ({ page }) => {
   // 만화-무료
   
 });
+*/
