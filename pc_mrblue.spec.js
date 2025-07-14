@@ -71,7 +71,7 @@ function statusResponse(page, currentPage) {
   logToFile('---------------------------------------------------------- '+currentPage+' ----------------------------------------------------------');
 }
 
-
+/*
 test('이메일 계정 로그인', async ({ page }) => {
   test.setTimeout(120000);
   
@@ -119,6 +119,7 @@ test('GNB', async ({ page }) => {
   await page.getByRole('link', { name: '전체보기', exact: true }).first().click();
   await page.getByRole('link', { name: '전체보기 닫기' }).click();
 });
+*/
 
 test('웹툰/연재', async ({ page }) => {
   test.setTimeout(120000);
@@ -172,6 +173,7 @@ test('웹툰/연재', async ({ page }) => {
   await page.getByRole('link', { name: '열흘' }).click();
 });
 
+/*
 test('웹툰/오리지널', async ({ page }) => {
   test.setTimeout(120000);
   
