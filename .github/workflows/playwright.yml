@@ -1,11 +1,11 @@
-name: Playwright Tests (Chromium only)
+name: Playwright Tests
 
 on:
   push:
     branches: [main]
   pull_request:
     branches: [main]
-  workflow_dispatch:
+  workflow_dispatch:  # ✅ 수동 실행 허용!
 
 jobs:
   test:
@@ -23,11 +23,17 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Install Chromium only
-        run: npx playwright install chromium
+      - name: Cache Playwright browsers
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright
 
-      - name: Run tests in Chromium only
-        run: npx playwright test --project=Chromium --reporter=html
+      - name: Install Playwright browsers
+        run: npx playwright install --with-deps
+
+      - name: Run tests and generate HTML report
+        run: npx playwright test --reporter=html
 
       - name: Upload Playwright HTML report
         uses: actions/upload-artifact@v4
