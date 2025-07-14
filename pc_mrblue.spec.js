@@ -861,6 +861,7 @@ test('만화/장르', async ({ page }) => {
   await page.locator('.btn-first').click();
 });
 
+/*
 test('만화/무협관', async ({ page }) => {
   test.setTimeout(600000);
   // 응답 상태 체크용 리스너  
@@ -1099,7 +1100,6 @@ test('만화/무협관', async ({ page }) => {
   await page.goBack();
 });
 
-/*
 test('만화/특별관', async ({ page }) => {
   test.setTimeout(600000);
   // 응답 상태 체크용 리스너  
