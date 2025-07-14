@@ -92,7 +92,7 @@ test('이메일 계정 로그인', async ({ page }) => {
   await page.locator('#loginPageForm').getByRole('link', { name: '로그인', exact: true }).click();
 });
 
-/*
+
 test('GNB', async ({ page }) => {
   test.setTimeout(120000);
   
@@ -136,7 +136,7 @@ test('웹툰/연재', async ({ page }) => {
   await page.getByRole('textbox', { name: '아이디' }).click();
   await page.getByRole('textbox', { name: '아이디' }).fill('npayuser_live@yopmail.com');
   await page.getByRole('textbox', { name: '비밀번호' }).click();
-  await page.getByRole('textbox', { name: '비밀번호' }).fill('f8611421!');
+  await page.getByRole('textbox', { name: '비밀번호' }).fill('1234');
   await page.locator('#loginPageForm').getByRole('link', { name: '로그인', exact: true }).click();
 
   // 웹툰
@@ -188,7 +188,7 @@ test('웹툰/오리지널', async ({ page }) => {
   await page.getByRole('textbox', { name: '아이디' }).click();
   await page.getByRole('textbox', { name: '아이디' }).fill('npayuser_live@yopmail.com');
   await page.getByRole('textbox', { name: '비밀번호' }).click();
-  await page.getByRole('textbox', { name: '비밀번호' }).fill('f8611421!');
+  await page.getByRole('textbox', { name: '비밀번호' }).fill('1234');
   await page.locator('#loginPageForm').getByRole('link', { name: '로그인', exact: true }).click();
 
   // 웹툰
@@ -214,7 +214,7 @@ test('웹툰/단편', async ({ page }) => {
   await page.getByRole('textbox', { name: '아이디' }).click();
   await page.getByRole('textbox', { name: '아이디' }).fill('npayuser_live@yopmail.com');
   await page.getByRole('textbox', { name: '비밀번호' }).click();
-  await page.getByRole('textbox', { name: '비밀번호' }).fill('f8611421!');
+  await page.getByRole('textbox', { name: '비밀번호' }).fill('1234');
   await page.locator('#loginPageForm').getByRole('link', { name: '로그인', exact: true }).click();
 
   // 웹툰
@@ -242,7 +242,7 @@ test('웹툰/장르', async ({ page }) => {
   await page.getByRole('textbox', { name: '아이디' }).click();
   await page.getByRole('textbox', { name: '아이디' }).fill('npayuser_live@yopmail.com');
   await page.getByRole('textbox', { name: '비밀번호' }).click();
-  await page.getByRole('textbox', { name: '비밀번호' }).fill('f8611421!');
+  await page.getByRole('textbox', { name: '비밀번호' }).fill('1234');
   await page.locator('#loginPageForm').getByRole('link', { name: '로그인', exact: true }).click();
 
   // 웹툰
@@ -294,7 +294,7 @@ test('웹툰/완결', async ({ page }) => {
   await page.getByRole('textbox', { name: '아이디' }).click();
   await page.getByRole('textbox', { name: '아이디' }).fill('npayuser_live@yopmail.com');
   await page.getByRole('textbox', { name: '비밀번호' }).click();
-  await page.getByRole('textbox', { name: '비밀번호' }).fill('f8611421!');
+  await page.getByRole('textbox', { name: '비밀번호' }).fill('1234');
   await page.locator('#loginPageForm').getByRole('link', { name: '로그인', exact: true }).click();
 
   // 웹툰
@@ -341,7 +341,7 @@ test('만화/추천', async ({ page }) => {
   await page.getByRole('textbox', { name: '아이디' }).click();
   await page.getByRole('textbox', { name: '아이디' }).fill('npayuser_live@yopmail.com');
   await page.getByRole('textbox', { name: '비밀번호' }).click();
-  await page.getByRole('textbox', { name: '비밀번호' }).fill('f8611421!');
+  await page.getByRole('textbox', { name: '비밀번호' }).fill('1234');
   await page.locator('#loginPageForm').getByRole('link', { name: '로그인', exact: true }).click();
 
   // 만화
@@ -401,7 +401,7 @@ test('만화/장르', async ({ page }) => {
   await page.getByRole('textbox', { name: '아이디' }).click();
   await page.getByRole('textbox', { name: '아이디' }).fill('npayuser_live@yopmail.com');
   await page.getByRole('textbox', { name: '비밀번호' }).click();
-  await page.getByRole('textbox', { name: '비밀번호' }).fill('f8611421!');
+  await page.getByRole('textbox', { name: '비밀번호' }).fill('1234');
   await page.locator('#loginPageForm').getByRole('link', { name: '로그인', exact: true }).click();
 
   // 만화
@@ -877,7 +877,7 @@ test('만화/무협관', async ({ page }) => {
   await page.getByRole('textbox', { name: '아이디' }).click();
   await page.getByRole('textbox', { name: '아이디' }).fill('npayuser_live@yopmail.com');
   await page.getByRole('textbox', { name: '비밀번호' }).click();
-  await page.getByRole('textbox', { name: '비밀번호' }).fill('f8611421!');
+  await page.getByRole('textbox', { name: '비밀번호' }).fill('1234');
   await page.locator('#loginPageForm').getByRole('link', { name: '로그인', exact: true }).click();
 
   // 만화
@@ -1099,6 +1099,7 @@ test('만화/무협관', async ({ page }) => {
   await page.goBack();
 });
 
+/*
 test('만화/특별관', async ({ page }) => {
   test.setTimeout(600000);
   // 응답 상태 체크용 리스너  
@@ -1115,7 +1116,7 @@ test('만화/특별관', async ({ page }) => {
   await page.getByRole('textbox', { name: '아이디' }).click();
   await page.getByRole('textbox', { name: '아이디' }).fill('npayuser_live@yopmail.com');
   await page.getByRole('textbox', { name: '비밀번호' }).click();
-  await page.getByRole('textbox', { name: '비밀번호' }).fill('f8611421!');
+  await page.getByRole('textbox', { name: '비밀번호' }).fill('1234');
   await page.locator('#loginPageForm').getByRole('link', { name: '로그인', exact: true }).click();
 
   // 만화
@@ -1142,7 +1143,7 @@ test('만화/무료', async ({ page }) => {
   await page.getByRole('textbox', { name: '아이디' }).click();
   await page.getByRole('textbox', { name: '아이디' }).fill('npayuser_live@yopmail.com');
   await page.getByRole('textbox', { name: '비밀번호' }).click();
-  await page.getByRole('textbox', { name: '비밀번호' }).fill('f8611421!');
+  await page.getByRole('textbox', { name: '비밀번호' }).fill('1234');
   await page.locator('#loginPageForm').getByRole('link', { name: '로그인', exact: true }).click();
 
   // 만화
