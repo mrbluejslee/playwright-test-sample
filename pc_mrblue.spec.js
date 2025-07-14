@@ -108,7 +108,7 @@ test('GNB', async ({ page }) => {
   await page.getByRole('textbox', { name: '아이디' }).click();
   await page.getByRole('textbox', { name: '아이디' }).fill('wenyamaro@naver.com');
   await page.getByRole('textbox', { name: '비밀번호' }).click();
-  await page.getByRole('textbox', { name: '비밀번호' }).fill('f8611421!');
+  await page.getByRole('textbox', { name: '비밀번호' }).fill('desertFox1!');
   await page.locator('#loginPageForm').getByRole('link', { name: '로그인', exact: true }).click();
 
   // GNB
