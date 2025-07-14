@@ -147,6 +147,7 @@ test('웹툰/연재', async ({ page }) => {
   await page.getByRole('link', { name: '연재', exact: true }).click();
   await page.waitForLoadState('networkidle');
   await page.locator('.banner-visual > ul > li > a').first().click();
+  await page.goBack();
   await page.getByRole('link', { name: '이전으로' }).click();
   await page.getByRole('link', { name: '다음으로' }).click();
   await page.locator('#popular_keyword_box').getByRole('link', { name: 'BL' }).click();
