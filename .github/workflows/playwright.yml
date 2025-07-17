@@ -33,7 +33,7 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Run tests and generate HTML report
-        run: npx playwright test --reporter=html
+        run: npx playwright test mobile.spec.js --headed --reporter=html; npx playwright show-report
 
       - name: Upload Playwright HTML report
         uses: actions/upload-artifact@v4
