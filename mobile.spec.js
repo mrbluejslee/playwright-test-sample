@@ -105,9 +105,9 @@ test('GNB', async ({ page }) => {
   //기능 검증을 위한 기본 로그인
   await page.goto('https://m.mrblue.com/login/');
   await page.getByRole('textbox', { name: '아이디' }).click();
-  await page.getByRole('textbox', { name: '아이디' }).fill('wenyamaro@naver.com');
+  await page.getByRole('textbox', { name: '아이디' }).fill('npayuser_live@yopmail.com');
   await page.getByRole('textbox', { name: '비밀번호' }).click();
-  await page.getByRole('textbox', { name: '비밀번호' }).fill('f8611421!');
+  await page.getByRole('textbox', { name: '비밀번호' }).fill('1234');
   await page.getByRole('button', { name: '로그인' }).click();
   
   console.log("메인 팝업 배너 닫기"+'\n');
