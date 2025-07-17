@@ -120,9 +120,9 @@ test('GNB', async ({ page }) => {
 
   console.log("메인 팝업 배너 닫기"+'\n');
   await page.click('.PopupBannerModal_btn-close__dUHAh');
-
+  
   console.log("BI 클릭"+'\n');
-  await page.click('.IconMBLogoKorean_wrap-big__7_mcp'); 
+  await page.click('.IconMBLogoKorean_icon-logo-mb-korean__7z90z'); 
 
   console.log("검색 버튼 클릭"+'\n');
   await page.click('.btn-search');
