@@ -103,7 +103,7 @@ test('GNB', async ({ page }) => {
   // console.log(""+'\n');
 
   //기능 검증을 위한 기본 로그인
-  await page.goto('https://stage-m.mrblue.com/login/');
+  await page.goto('https://m.mrblue.com/login/');
   await page.getByRole('textbox', { name: '아이디' }).click();
   await page.getByRole('textbox', { name: '아이디' }).fill('wenyamaro@naver.com');
   await page.getByRole('textbox', { name: '비밀번호' }).click();
@@ -115,7 +115,7 @@ test('GNB', async ({ page }) => {
 
   console.log("완전판 다운로드 배너 > 받기 버튼 클릭"+'\n');
   await page.click('.HeaderBanner_btn-receive__ZCt42');
-  await expect(page).toHaveURL('https://stage-m.mrblue.com/viewer/download.asp');
+  await expect(page).toHaveURL('https://m.mrblue.com/viewer/download.asp');
   await page.goBack();
 
   console.log("메인 팝업 배너 닫기"+'\n');
@@ -131,7 +131,7 @@ test('GNB', async ({ page }) => {
   await page.getByRole('textbox', { name: '작품, 작가, 출판사, 키워드 검색' }).click();
   await page.getByRole('textbox', { name: '작품, 작가, 출판사, 키워드 검색' }).fill('가');
   await page.getByRole('textbox', { name: '작품, 작가, 출판사, 키워드 검색' }).press('Enter');
-  await expect(page).toHaveURL('https://stage-m.mrblue.com/search/all?keyword=%EA%B0%80');
+  await expect(page).toHaveURL('https://m.mrblue.com/search/all?keyword=%EA%B0%80');
 
   console.log("뒤로가기 버튼 클릭_미블"+'\n');
   await page.getByRole('button').first().click();

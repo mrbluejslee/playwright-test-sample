@@ -33,7 +33,7 @@ jobs:
         run: npx playwright install chromium
 
       - name: Run tests and generate HTML report
-        run: npx playwright test mobile.spec.js --reporter=html; npx playwright show-report
+        run: npx playwright test mobile.spec.js --reporter=html;
 
       - name: Upload Playwright HTML report
         uses: actions/upload-artifact@v4
