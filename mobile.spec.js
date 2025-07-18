@@ -7,8 +7,9 @@ import fetch from 'node-fetch';
 import FormData from 'form-data';
 import { htmlToText } from 'html-to-text';
 import debug from 'debug';
+import { waitAndClick } from './utils';
 
-// Pixel 7 디바이스 수동 정의 (Pixel 5는 기본 제공됨)
+// 디바이스 설정
 const pixel7 = {
   name: 'Pixel 7',
   userAgent: 'Mozilla/5.0 (Linux; Android 13; Pixel 7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Mobile Safari/537.36',
@@ -17,8 +18,15 @@ const pixel7 = {
   isMobile: true,
   hasTouch: true,
 };
-
 const logFile = `./test_log_${getCurrentTimestamp()}.txt`;
+
+
+// 액션 타임아웃 시간 설정
+test.use({
+  ...pixel7,
+  actionTimeout: 5000,   // 모든 액션 (click, fill 등)에 기본 timeout
+  expect: { timeout: 5000 }, // expect() 관련 timeout 기본값
+});
 
 // 로그 파일 내보내기
 function logToFile(message) {
@@ -40,6 +48,25 @@ function getCurrentTimestamp() {
   return `${year}${month}${day}_${hour}${minute}${second}`;
 }
 
+// 로그 파일 리포트 첨부
+async function attachLogFile(testInfo, logFilePath, attachName = '테스트 실행 로그') {
+  if (fs.existsSync(logFilePath)) {
+    const logContent = fs.readFileSync(logFilePath, 'utf-8');
+    await testInfo.attach(attachName, {
+      body: Buffer.from(logContent, 'utf-8'),
+      contentType: 'text/plain',
+    });
+  } else {
+    console.warn(`로그 파일이 없습니다: ${logFilePath}`);
+  }
+}
+
+// 로그 중복 URL 출력 방지
+const state = {
+  lastPageURL: null,
+  lastLoggedPageUrl: null
+};
+
 // 400-500에러 발생 시 테스트 일시정지
 async function checkAndMaybePause(page) {
   if (someCondition) {
@@ -48,41 +75,41 @@ async function checkAndMaybePause(page) {
 }
 
 // 응답 상태 체크용 리스너
-function statusResponse(page, currentPage) {
-  console.log('----------------------------- '+currentPage+' -----------------------------');
+function statusResponse(page, state, currentPage) {
+  console.log('---------------------------------- ' + currentPage + ' ----------------------------------');
+  logToFile('---------------------------------- ' + currentPage + ' ----------------------------------');
+
+  page.removeAllListeners('response');
+
   page.on('response', response => {
-    if (response.status() >= 400 && response.status() !== 429) {
-      console.warn(`❌ HTTP ${response.status()} - ${response.url()}`);
-      console.log('❌ URL:', page.url());
-      console.log('❌ Fail');
+    const status = response.status();
+    const url = response.url();
+    const currentPageUrl = page.url();
 
-      const logMessage = `❌ HTTP ${response.status()} - ${response.url()}`;
-      logToFile(logMessage); // 로그 파일로 저장
-      logToFile('❌ URL: ' + page.url()); // 현재 페이지 URL도 저장
-      //checkAndMaybePause(page)
+    if (currentPageUrl !== 'about:blank' && currentPageUrl !== state.lastLoggedPageUrl) {
+      logToFile(`🌐 Page URL: ${currentPageUrl}`);
+      state.lastLoggedPageUrl = currentPageUrl;
     }
-    else if ((response.status() == 200))
-    {
-      console.warn(`🟢 HTTP ${response.status()} - ${response.url()}`);
-      console.log('🟢 URL:', page.url());
-      console.log('🟢 Pass');
 
-      const logMessage = `🟢 HTTP ${response.status()} - ${response.url()}`;
-      logToFile(logMessage); // 로그 파일로 저장
-      logToFile('🟢 URL: ' + page.url()); // 현재 페이지 URL도 저장
-      
+    let statusIcon = '';
+    if (status >= 400 && status !== 429) {
+      statusIcon = '❌';
+    } else if (status === 200) {
+      statusIcon = '🟢';
+    } else {
+      statusIcon = '⚠️';
     }
-    else
-    {
-      console.warn(`⚠️ HTTP ${response.status()} - ${response.url()}`);
-      console.log('⚠️ URL:', page.url());
 
-      const logMessage = `⚠️ HTTP ${response.status()} - ${response.url()}`;
-      logToFile(logMessage); // 로그 파일로 저장
-      logToFile('⚠️ URL: ' + page.url()); // 현재 페이지 URL도 저장
+    if (!state.hasLoggedFirstStatus) {
+      state.hasLoggedFirstStatus = true;
+      return;
     }
+
+    const logMessage = ` ┗ ${statusIcon} HTTP ${status} - ${url}`;
+    logToFile(logMessage);
+
+    state.lastPageURL = url;
   });
-  logToFile('---------------------------------------------------------- '+currentPage+' ----------------------------------------------------------');
 }
 
 function delay(ms) {
@@ -91,76 +118,421 @@ function delay(ms) {
 
 test.use({ ...pixel7 });
 
-test('GNB', async ({ page }) => {
-  test.setTimeout(120000);
-  
-  var currentPage = 'GNB';
+let tcNumber = 1; // 전역 변수
 
-  statusResponse(page, currentPage);
-  
-  await page.waitForLoadState('networkidle');
-  
-  // console.log(""+'\n');
+async function runTestCase(testCaseName, fn) {
+  const formattedNumber = tcNumber.toString().padStart(4, '0');
+  try {
+    await fn();
+    console.log(`TC-${formattedNumber}  ${testCaseName} : 🟢 PASS`);
+  } catch (e) {
+    console.log(`TC-${formattedNumber}  ${testCaseName} : ❌ FAIL`);
+    console.error(e);
+  }
+  tcNumber++;
+}
 
-  //기능 검증을 위한 기본 로그인
-  await page.goto('https://m.mrblue.com/login/');
-  await page.getByRole('textbox', { name: '아이디' }).click();
-  await page.getByRole('textbox', { name: '아이디' }).fill('npayuser_live@yopmail.com');
-  await page.getByRole('textbox', { name: '비밀번호' }).click();
-  await page.getByRole('textbox', { name: '비밀번호' }).fill('1234');
-  await page.getByRole('button', { name: '로그인' }).click();
-  
-  console.log("메인 팝업 배너 닫기"+'\n');
-  await page.click('.PopupBannerModal_btn-close__dUHAh');
-
-  console.log("완전판 다운로드 배너 > 받기 버튼 클릭"+'\n');
-  await page.click('.HeaderBanner_btn-receive__ZCt42');
-  await expect(page).toHaveURL('https://m.mrblue.com/viewer/download.asp');
+async function goBackAndWait(page) {
   await page.goBack();
+  await page.waitForLoadState('load');
+}
 
-  console.log("메인 팝업 배너 닫기"+'\n');
-  await page.click('.PopupBannerModal_btn-close__dUHAh');
-  
-  console.log("BI 클릭"+'\n');
-  await page.click('.IconMBLogoKorean_icon-logo-mb-korean__7z90z'); 
 
-  console.log("검색 버튼 클릭"+'\n');
-  await page.click('.btn-search');
+test('GNB', async ({ page }, testInfo) => {
+  test.setTimeout(200000);
 
-  console.log("검색어 입력 후 검색"+'\n');
-  await page.getByRole('textbox', { name: '작품, 작가, 출판사, 키워드 검색' }).click();
-  await page.getByRole('textbox', { name: '작품, 작가, 출판사, 키워드 검색' }).fill('가');
-  await page.getByRole('textbox', { name: '작품, 작가, 출판사, 키워드 검색' }).press('Enter');
-  await expect(page).toHaveURL('https://m.mrblue.com/search/all?keyword=%EA%B0%80');
+  statusResponse(page, state, 'GNB');
 
-  console.log("뒤로가기 버튼 클릭_미블"+'\n');
-  await page.getByRole('button').first().click();
-  console.log("뒤로가기 버튼 클릭_미블"+'\n');
-  await page.getByRole('button').filter({ hasText: /^$/ }).click();
+  await page.goto('https://m.mrblue.com');
 
-  console.log("메인 팝업 배너 닫기"+'\n');
-  await page.click('.PopupBannerModal_btn-close__dUHAh');
+  await runTestCase('이메일 계정 로그인', async () => {
+    await page.goto('https://m.mrblue.com/login/');
+    await page.getByRole('textbox', { name: '아이디' }).click();
+    await page.getByRole('textbox', { name: '아이디' }).fill('wenyamaro@naver.com');
+    await page.getByRole('textbox', { name: '비밀번호' }).click();
+    await page.getByRole('textbox', { name: '비밀번호' }).fill('f8611421!');
+    await page.getByRole('button', { name: '로그인' }).click();
+  });
 
-  console.log("사이드 메뉴 열기"+'\n')
-  await page.getByRole('button', { name: 'side menu' }).click();
-
-  console.log("사이드 메뉴 닫기"+'\n')
-  await page.getByRole('button', { name: '사이드바 닫기' }).click();
-  
   /*
-  console.log(""+'\n')
-  await page.click('.');
-
-  console.log(""+'\n')
-  await page.click('.');
-
-  console.log(""+'\n')
-  await page.click('.');
-
-  console.log(""+'\n')
-  await page.click('.');
-
-  console.log(""+'\n')
-  await page.click('.');
+  await runTestCase('메인 팝업 닫기', async () => {
+    await page.click('.PopupBannerModal_btn-close__dUHAh');
+  });
   */
+
+  await runTestCase('GNB > 완전판 다운로드 배너 > 받기 버튼 클릭', async () => {
+    await page.click('.HeaderBanner_btn-receive__ZCt42');
+    await expect(page).toHaveURL('https://m.mrblue.com/viewer/download.asp');
+  });
+  await page.goBack();
+  await page.waitForLoadState('load');
+
+  await runTestCase('GNB > 완전판 다운로드 배너 > 닫기 버튼 클릭', async () => {
+    await page.getByRole('button', { name: '닫기', exact: true }).click();
+  });
+
+  await runTestCase('GNB > BI 클릭', async () => {
+    await page.click('.IconMBLogoKorean_wrap-big__7_mcp');
+  });
+
+  await runTestCase('GNB > 검색 버튼 클릭', async () => {
+    const container = page.locator('div.MainHomeHeaderTop_box-right__uYOFX');
+    await container.getByRole('link', { name: 'search' }).click();
+  });
+
+  await runTestCase('GNB > 검색어 입력 후 검색 실행', async () => {
+    await page.getByRole('textbox', { name: '작품, 작가, 출판사, 키워드 검색' }).click();
+    await page.getByRole('textbox', { name: '작품, 작가, 출판사, 키워드 검색' }).fill('가');
+    await page.getByRole('textbox', { name: '작품, 작가, 출판사, 키워드 검색' }).press('Enter');
+    await page.waitForLoadState('load');
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL('https://m.mrblue.com/search/all?keyword=%EA%B0%80');
+  });
+
+  await runTestCase('검색결과 페이지 > 뒤로가기 버튼 클릭', async () => {
+    await page.getByRole('button').first().click();
+  });
+
+  await runTestCase('검색메인 페이지 > 뒤로가기 버튼 클릭', async () => {
+    await page.getByRole('button').filter({ hasText: /^$/ }).click();
+  });
+
+  await runTestCase('GNB > 사이드 메뉴 열기', async () => {
+    const container = page.locator('div.MainHomeHeaderTop_box-right__uYOFX');
+    await container.getByRole('button', { name: 'side menu' }).click();
+  });
+
+  await runTestCase('GNB > 사이드 메뉴 닫기', async () => {
+    await page.getByRole('button', { name: '사이드바 닫기' }).click();
+  });
+
+  await runTestCase('GNB > 웹툰 메뉴 탭 클릭', async () => {
+    const container = page.locator('div.HeaderBottom_header-bottom__Xbv3s.scrollbar-hidden.HeaderBottom_home__OBMxP')
+    await container.getByRole('link', { name: '웹툰', exact: true }).click();
+    await page.waitForLoadState('load');
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL('https://m.mrblue.com/webtoon');
+  });
+  await goBackAndWait(page);
+
+  await runTestCase('GNB > 만화 메뉴 탭 클릭', async () => {
+    const container = page.locator('div.HeaderBottom_header-bottom__Xbv3s.scrollbar-hidden.HeaderBottom_home__OBMxP')
+    await container.getByRole('link', { name: '만화', exact: true }).click();
+    await page.waitForLoadState('load');
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL('https://m.mrblue.com/comic');
+  });
+  await goBackAndWait(page);
+
+  await runTestCase('GNB > 소설 메뉴 탭 클릭', async () => {
+    const container = page.locator('div.HeaderBottom_header-bottom__Xbv3s.scrollbar-hidden.HeaderBottom_home__OBMxP')
+    await container.getByRole('link', { name: '소설', exact: true }).click();
+    await page.waitForLoadState('load');
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL('https://m.mrblue.com/novel/ranking');
+  });
+  await goBackAndWait(page);
+
+  await runTestCase('GNB > 무료쿠폰 메뉴 탭 클릭', async () => {
+    const container = page.locator('div.HeaderBottom_header-bottom__Xbv3s.scrollbar-hidden.HeaderBottom_home__OBMxP')
+    await container.getByRole('link', { name: '무료쿠폰', exact: true }).click();
+    await page.waitForLoadState('load');
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL('https://m.mrblue.com/freecoupon/wait?type=ALL&sort=RECOMMENDED');
+  });
+  await goBackAndWait(page);
+
+  await runTestCase('GNB > 웹툰 > BI 클릭', async () => {
+    await page.goto('https://m.mrblue.com/webtoon');
+    await page.waitForLoadState('load');
+    const container = page.locator('div.ContentsHomeHeaderTop_header-top__OpvGQ')
+    await container.locator('div.ContentsHomeHeaderTop_box-left__ivHol').click();
+    await page.waitForLoadState('load');
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL('https://m.mrblue.com/');
+  });
+
+  await runTestCase('GNB > 웹툰 > 메뉴 셀렉트 박스 열기/닫기', async () => {
+    await page.goto('https://m.mrblue.com/webtoon');
+    await page.waitForLoadState('load');
+    const container = page.locator('div.ContentsHomeHeaderTop_header-top__OpvGQ')
+    await container.locator('div.MenuDropDown_wrap-menu__tONiI').click();
+    await container.locator('div.MenuDropDown_wrap-menu__tONiI').click();
+  });
+
+  await runTestCase('GNB > 웹툰 > 메뉴 셀렉트 박스 > 홈 버튼 클릭', async () => {
+    await page.goto('https://m.mrblue.com/webtoon');
+    await page.waitForLoadState('load');
+    const container = page.locator('div.ContentsHomeHeaderTop_header-top__OpvGQ')
+    await container.locator('div.MenuDropDown_wrap-menu__tONiI').click();
+    await page.locator('ul.MenuDropDown_list-menu__tyuh7.MenuDropDown_visible__jBziM li').nth(0).click();
+    await page.waitForLoadState('load');
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL('https://m.mrblue.com/');
+  });
+
+  await runTestCase('GNB > 웹툰 > 메뉴 셀렉트 박스 > 웹툰 버튼 클릭', async () => {
+    await page.goto('https://m.mrblue.com/webtoon');
+    await page.waitForLoadState('load');
+    const container = page.locator('div.ContentsHomeHeaderTop_header-top__OpvGQ')
+    await container.locator('div.MenuDropDown_wrap-menu__tONiI').click();
+    await page.locator('ul.MenuDropDown_list-menu__tyuh7.MenuDropDown_visible__jBziM li').nth(1).click();
+    await page.waitForLoadState('load');
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL('https://m.mrblue.com/webtoon');
+  });
+
+  await runTestCase('GNB > 웹툰 > 메뉴 셀렉트 박스 > 만화 버튼 클릭', async () => {
+    await page.goto('https://m.mrblue.com/webtoon');
+    await page.waitForLoadState('load');
+    const container = page.locator('div.ContentsHomeHeaderTop_header-top__OpvGQ')
+    await container.locator('div.MenuDropDown_wrap-menu__tONiI').click();
+    await page.locator('ul.MenuDropDown_list-menu__tyuh7.MenuDropDown_visible__jBziM li').nth(2).click();
+    await page.waitForLoadState('load');
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL('https://m.mrblue.com/comic');
+  });
+
+  await runTestCase('GNB > 웹툰 > 메뉴 셀렉트 박스 > 소설 버튼 클릭', async () => {
+    await page.goto('https://m.mrblue.com/webtoon');
+    await page.waitForLoadState('load');
+    const container = page.locator('div.ContentsHomeHeaderTop_header-top__OpvGQ')
+    await container.locator('div.MenuDropDown_wrap-menu__tONiI').click();
+    await page.locator('ul.MenuDropDown_list-menu__tyuh7.MenuDropDown_visible__jBziM li').nth(3).click();
+    await page.waitForLoadState('load');
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL('https://m.mrblue.com/novel/ranking');
+  });
+
+  await runTestCase('GNB > 웹툰 > 메뉴 셀렉트 박스 > 무료쿠폰 버튼 클릭', async () => {
+    await page.goto('https://m.mrblue.com/webtoon');
+    await page.waitForLoadState('load');
+    const container = page.locator('div.ContentsHomeHeaderTop_header-top__OpvGQ')
+    await container.locator('div.MenuDropDown_wrap-menu__tONiI').click();
+    await page.locator('ul.MenuDropDown_list-menu__tyuh7.MenuDropDown_visible__jBziM li').nth(4).click();
+    await page.waitForLoadState('load');
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL('https://m.mrblue.com/freecoupon/wait?type=ALL&sort=RECOMMENDED');
+  });
+
+  await runTestCase('GNB > 만화 > BI 클릭', async () => {
+    await page.goto('https://m.mrblue.com/comic');
+    await page.waitForLoadState('load');
+    const container = page.locator('div.ContentsHomeHeaderTop_header-top__OpvGQ')
+    await container.locator('div.ContentsHomeHeaderTop_box-left__ivHol').click();
+    await page.waitForLoadState('load');
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL('https://m.mrblue.com/');
+  });
+
+  await runTestCase('GNB > 만화 > 메뉴 셀렉트 박스 열기/닫기', async () => {
+    await page.goto('https://m.mrblue.com/comic');
+    await page.waitForLoadState('load');
+    const container = page.locator('div.ContentsHomeHeaderTop_header-top__OpvGQ')
+    await container.locator('div.MenuDropDown_wrap-menu__tONiI').click();
+    await container.locator('div.MenuDropDown_wrap-menu__tONiI').click();
+  });
+
+  await runTestCase('GNB > 만화 > 메뉴 셀렉트 박스 > 홈 버튼 클릭', async () => {
+    await page.goto('https://m.mrblue.com/comic');
+    await page.waitForLoadState('load');
+    const container = page.locator('div.ContentsHomeHeaderTop_header-top__OpvGQ')
+    await container.locator('div.MenuDropDown_wrap-menu__tONiI').click();
+    await page.locator('ul.MenuDropDown_list-menu__tyuh7.MenuDropDown_visible__jBziM li').nth(0).click();
+    await page.waitForLoadState('load');
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL('https://m.mrblue.com/');
+  });
+
+  await runTestCase('GNB > 만화 > 메뉴 셀렉트 박스 > 웹툰 버튼 클릭', async () => {
+    await page.goto('https://m.mrblue.com/comic');
+    await page.waitForLoadState('load');
+    const container = page.locator('div.ContentsHomeHeaderTop_header-top__OpvGQ')
+    await container.locator('div.MenuDropDown_wrap-menu__tONiI').click();
+    await page.locator('ul.MenuDropDown_list-menu__tyuh7.MenuDropDown_visible__jBziM li').nth(1).click();
+    await page.waitForLoadState('load');
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL('https://m.mrblue.com/webtoon');
+  });
+
+  await runTestCase('GNB > 만화 > 메뉴 셀렉트 박스 > 만화 버튼 클릭', async () => {
+    await page.goto('https://m.mrblue.com/comic');
+    await page.waitForLoadState('load');
+    const container = page.locator('div.ContentsHomeHeaderTop_header-top__OpvGQ')
+    await container.locator('div.MenuDropDown_wrap-menu__tONiI').click();
+    await page.locator('ul.MenuDropDown_list-menu__tyuh7.MenuDropDown_visible__jBziM li').nth(2).click();
+    await page.waitForLoadState('load');
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL('https://m.mrblue.com/comic');
+  });
+
+  await runTestCase('GNB > 만화 > 메뉴 셀렉트 박스 > 소설 버튼 클릭', async () => {
+    await page.goto('https://m.mrblue.com/comic');
+    await page.waitForLoadState('load');
+    const container = page.locator('div.ContentsHomeHeaderTop_header-top__OpvGQ')
+    await container.locator('div.MenuDropDown_wrap-menu__tONiI').click();
+    await page.locator('ul.MenuDropDown_list-menu__tyuh7.MenuDropDown_visible__jBziM li').nth(3).click();
+    await page.waitForLoadState('load');
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL('https://m.mrblue.com/novel/ranking');
+  });
+
+  await runTestCase('GNB > 만화 > 메뉴 셀렉트 박스 > 무료쿠폰 버튼 클릭', async () => {
+    await page.goto('https://m.mrblue.com/comic');
+    await page.waitForLoadState('load');
+    const container = page.locator('div.ContentsHomeHeaderTop_header-top__OpvGQ')
+    await container.locator('div.MenuDropDown_wrap-menu__tONiI').click();
+    await page.locator('ul.MenuDropDown_list-menu__tyuh7.MenuDropDown_visible__jBziM li').nth(4).click();
+    await page.waitForLoadState('load');
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL('https://m.mrblue.com/freecoupon/wait?type=ALL&sort=RECOMMENDED');
+  });
+
+    await runTestCase('GNB > 소설 > BI 클릭', async () => {
+    await page.goto('https://m.mrblue.com/novel/ranking');
+    await page.waitForLoadState('load');
+    const container = page.locator('div.ContentsHomeHeaderTop_header-top__OpvGQ')
+    await container.locator('div.ContentsHomeHeaderTop_box-left__ivHol').click();
+    await page.waitForLoadState('load');
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL('https://m.mrblue.com/');
+  });
+
+  await runTestCase('GNB > 소설 > 메뉴 셀렉트 박스 열기/닫기', async () => {
+    await page.goto('https://m.mrblue.com/novel/ranking');
+    await page.waitForLoadState('load');
+    const container = page.locator('div.ContentsHomeHeaderTop_header-top__OpvGQ')
+    await container.locator('div.MenuDropDown_wrap-menu__tONiI').click();
+    await container.locator('div.MenuDropDown_wrap-menu__tONiI').click();
+  });
+
+  await runTestCase('GNB > 소설 > 메뉴 셀렉트 박스 > 홈 버튼 클릭', async () => {
+    await page.goto('https://m.mrblue.com/novel/ranking');
+    await page.waitForLoadState('load');
+    const container = page.locator('div.ContentsHomeHeaderTop_header-top__OpvGQ')
+    await container.locator('div.MenuDropDown_wrap-menu__tONiI').click();
+    await page.locator('ul.MenuDropDown_list-menu__tyuh7.MenuDropDown_visible__jBziM li').nth(0).click();
+    await page.waitForLoadState('load');
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL('https://m.mrblue.com/');
+  });
+
+  await runTestCase('GNB > 소설 > 메뉴 셀렉트 박스 > 웹툰 버튼 클릭', async () => {
+    await page.goto('https://m.mrblue.com/novel/ranking');
+    await page.waitForLoadState('load');
+    const container = page.locator('div.ContentsHomeHeaderTop_header-top__OpvGQ')
+    await container.locator('div.MenuDropDown_wrap-menu__tONiI').click();
+    await page.locator('ul.MenuDropDown_list-menu__tyuh7.MenuDropDown_visible__jBziM li').nth(1).click();
+    await page.waitForLoadState('load');
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL('https://m.mrblue.com/webtoon');
+  });
+
+  await runTestCase('GNB > 소설 > 메뉴 셀렉트 박스 > 만화 버튼 클릭', async () => {
+    await page.goto('https://m.mrblue.com/novel/ranking');
+    await page.waitForLoadState('load');
+    const container = page.locator('div.ContentsHomeHeaderTop_header-top__OpvGQ')
+    await container.locator('div.MenuDropDown_wrap-menu__tONiI').click();
+    await page.locator('ul.MenuDropDown_list-menu__tyuh7.MenuDropDown_visible__jBziM li').nth(2).click();
+    await page.waitForLoadState('load');
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL('https://m.mrblue.com/comic');
+  });
+
+  await runTestCase('GNB > 소설 > 메뉴 셀렉트 박스 > 소설 버튼 클릭', async () => {
+    await page.goto('https://m.mrblue.com/novel/ranking');
+    await page.waitForLoadState('load');
+    const container = page.locator('div.ContentsHomeHeaderTop_header-top__OpvGQ')
+    await container.locator('div.MenuDropDown_wrap-menu__tONiI').click();
+    await page.locator('ul.MenuDropDown_list-menu__tyuh7.MenuDropDown_visible__jBziM li').nth(3).click();
+    await page.waitForLoadState('load');
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL('https://m.mrblue.com/novel/ranking');
+  });
+
+  await runTestCase('GNB > 소설 > 메뉴 셀렉트 박스 > 무료쿠폰 버튼 클릭', async () => {
+    await page.goto('https://m.mrblue.com/freecoupon/wait?type=ALL&sort=RECOMMENDED');
+    await page.waitForLoadState('load');
+    const container = page.locator('div.ContentsHomeHeaderTop_header-top__OpvGQ')
+    await container.locator('div.MenuDropDown_wrap-menu__tONiI').click();
+    await page.locator('ul.MenuDropDown_list-menu__tyuh7.MenuDropDown_visible__jBziM li').nth(4).click();
+    await page.waitForLoadState('load');
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL('https://m.mrblue.com/freecoupon/wait?type=ALL&sort=RECOMMENDED');
+  });
+
+    await runTestCase('GNB > 무료쿠폰 > BI 클릭', async () => {
+    await page.goto('https://m.mrblue.com/freecoupon/wait?type=ALL&sort=RECOMMENDED');
+    await page.waitForLoadState('load');
+    const container = page.locator('div.ContentsHomeHeaderTop_header-top__OpvGQ')
+    await container.locator('div.ContentsHomeHeaderTop_box-left__ivHol').click();
+    await page.waitForLoadState('load');
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL('https://m.mrblue.com/');
+  });
+
+  await runTestCase('GNB > 무료쿠폰 > 메뉴 셀렉트 박스 열기/닫기', async () => {
+    await page.goto('https://m.mrblue.com/freecoupon/wait?type=ALL&sort=RECOMMENDED');
+    await page.waitForLoadState('load');
+    const container = page.locator('div.ContentsHomeHeaderTop_header-top__OpvGQ')
+    await container.locator('div.MenuDropDown_wrap-menu__tONiI').click();
+    await container.locator('div.MenuDropDown_wrap-menu__tONiI').click();
+  });
+
+  await runTestCase('GNB > 무료쿠폰 > 메뉴 셀렉트 박스 > 홈 버튼 클릭', async () => {
+    await page.goto('https://m.mrblue.com/freecoupon/wait?type=ALL&sort=RECOMMENDED');
+    await page.waitForLoadState('load');
+    const container = page.locator('div.ContentsHomeHeaderTop_header-top__OpvGQ')
+    await container.locator('div.MenuDropDown_wrap-menu__tONiI').click();
+    await page.locator('ul.MenuDropDown_list-menu__tyuh7.MenuDropDown_visible__jBziM li').nth(0).click();
+    await page.waitForLoadState('load');
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL('https://m.mrblue.com/');
+  });
+
+  await runTestCase('GNB > 무료쿠폰 > 메뉴 셀렉트 박스 > 웹툰 버튼 클릭', async () => {
+    await page.goto('https://m.mrblue.com/freecoupon/wait?type=ALL&sort=RECOMMENDED');
+    await page.waitForLoadState('load');
+    const container = page.locator('div.ContentsHomeHeaderTop_header-top__OpvGQ')
+    await container.locator('div.MenuDropDown_wrap-menu__tONiI').click();
+    await page.locator('ul.MenuDropDown_list-menu__tyuh7.MenuDropDown_visible__jBziM li').nth(1).click();
+    await page.waitForLoadState('load');
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL('https://m.mrblue.com/webtoon');
+  });
+
+  await runTestCase('GNB > 무료쿠폰 > 메뉴 셀렉트 박스 > 만화 버튼 클릭', async () => {
+    await page.goto('https://m.mrblue.com/freecoupon/wait?type=ALL&sort=RECOMMENDED');
+    await page.waitForLoadState('load');
+    const container = page.locator('div.ContentsHomeHeaderTop_header-top__OpvGQ')
+    await container.locator('div.MenuDropDown_wrap-menu__tONiI').click();
+    await page.locator('ul.MenuDropDown_list-menu__tyuh7.MenuDropDown_visible__jBziM li').nth(2).click();
+    await page.waitForLoadState('load');
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL('https://m.mrblue.com/comic');
+  });
+
+  await runTestCase('GNB > 무료쿠폰 > 메뉴 셀렉트 박스 > 소설 버튼 클릭', async () => {
+    await page.goto('https://m.mrblue.com/freecoupon/wait?type=ALL&sort=RECOMMENDED');
+    await page.waitForLoadState('load');
+    const container = page.locator('div.ContentsHomeHeaderTop_header-top__OpvGQ')
+    await container.locator('div.MenuDropDown_wrap-menu__tONiI').click();
+    await page.locator('ul.MenuDropDown_list-menu__tyuh7.MenuDropDown_visible__jBziM li').nth(3).click();
+    await page.waitForLoadState('load');
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL('https://m.mrblue.com/novel/ranking');
+  });
+
+  await runTestCase('GNB > 무료쿠폰 > 메뉴 셀렉트 박스 > 무료쿠폰 버튼 클릭', async () => {
+    await page.goto('https://m.mrblue.com/freecoupon/wait?type=ALL&sort=RECOMMENDED');
+    await page.waitForLoadState('load');
+    const container = page.locator('div.ContentsHomeHeaderTop_header-top__OpvGQ')
+    await container.locator('div.MenuDropDown_wrap-menu__tONiI').click();
+    await page.locator('ul.MenuDropDown_list-menu__tyuh7.MenuDropDown_visible__jBziM li').nth(4).click();
+    await page.waitForLoadState('load');
+    await page.waitForLoadState('networkidle');
+    await expect(page).toHaveURL('https://m.mrblue.com/freecoupon/wait?type=ALL&sort=RECOMMENDED');
+  });
+
+  await attachLogFile(testInfo, logFile);
 });

@@ -1,0 +1,70 @@
+---------------------------------- GNB ----------------------------------
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/login/
+🌐 Page URL: https://stage-m.mrblue.com/login/
+ ┗ ⚠️ HTTP 301 - https://developers.kakao.com/sdk/js/kakao.js
+ ┗ 🟢 HTTP 200 - https://stage-static.mrblue.com/tracking/ga4-1.0.0.min.js
+ ┗ 🟢 HTTP 200 - https://stage-viewer.mrblue.com/viewer-library.js
+ ┗ 🟢 HTTP 200 - https://t1.kakaocdn.net/kakao_js_sdk/v1/kakao.js
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/styles/css/app.css?ver=20250715
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/styles/css/reset.css?ver=20250715
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/scripts/lib/toast/jquery.toast.min.css?ver=20250715
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/styles/css/colors.d.css?ver=20250715
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/scripts/lib/waitme-plugin/waitme.min.css
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/styles/css/default/app.css?ver=20250715
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/styles/css/user.css?ver=20250715
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/vendor/sweetalert/sweetalert.css?ver=20250715
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/styles/css/common.css?ver=20250715
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/styles/css/icon.css?ver=20250715
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/styles/css/component.css?ver=20250715
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/styles/css/images.d.css?ver=20250715
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/scripts/js/favicon.js?ver=20250715
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/font/Pretendard-Regular.woff2
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/font/Pretendard-Medium.woff2
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/scripts/lib/toast/jquery.toast.min.js
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/scripts/lib/waitme-plugin/waitme.min.js
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/scripts/lib/ladda/spin.min.js
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/font/Pretendard-SemiBold.woff2
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/scripts/lib/ladda/ladda.min.js
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/scripts/js/common.js?ver=20250715
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/scripts/lib/scrolltofixed/bodyScrollLock.js
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/scripts/lib/jquery/jquery-1.11.2.min.js
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/font/Pretendard-Bold.woff2
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/scripts/lib/fastclick/fastclick.js
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/auto-payment/scripts/mbpopup.min.js
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/scripts/lib/social-login/jquery.cookie.js
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/scripts/js/form.js?ver=20250715
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/scripts/lib/social-login/mb-social-login-0.0.2.js?ver=20250715
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/scripts/js/app_execute.js?ver=20250715
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/scripts/lib/social-login/naverLogin_implicit-1.0.2-min.js?ver=20250715
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/scripts/js/utils.js?ver=20250715
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/vendor/sweetalert/sweetalert.min.js
+ ┗ 🟢 HTTP 200 - https://connect.facebook.net/en_US/fbevents.js
+ ┗ 🟢 HTTP 200 - https://connect.facebook.net/signals/config/211817962486013?v=2.9.216&r=stable&domain=stage-m.mrblue.com&hme=0d2c2eb2669df120d9f277453f8987d9c2d55affb793f9f745ec25e01f4e8872&ex_m=83%2C143%2C124%2C18%2C117%2C58%2C40%2C118%2C64%2C57%2C131%2C72%2C13%2C82%2C26%2C112%2C103%2C62%2C65%2C111%2C128%2C91%2C133%2C7%2C3%2C4%2C6%2C5%2C2%2C73%2C81%2C134%2C205%2C155%2C52%2C210%2C207%2C208%2C45%2C169%2C25%2C61%2C214%2C213%2C157%2C28%2C51%2C8%2C54%2C77%2C78%2C79%2C84%2C107%2C27%2C24%2C110%2C106%2C105%2C125%2C63%2C127%2C126%2C41%2C108%2C50%2C100%2C12%2C130%2C37%2C196%2C198%2C165%2C21%2C22%2C23%2C15%2C16%2C36%2C33%2C34%2C68%2C74%2C76%2C89%2C116%2C119%2C38%2C90%2C19%2C17%2C94%2C59%2C31%2C121%2C120%2C122%2C113%2C20%2C30%2C49%2C88%2C129%2C29%2C179%2C151%2C86%2C109%2C67%2C98%2C44%2C39%2C96%2C97%2C102%2C48%2C14%2C104%2C95%2C55%2C43%2C46%2C0%2C80%2C132%2C1%2C101%2C11%2C99%2C254%2C194%2C141%2C182%2C175%2C9%2C47%2C75%2C53%2C123%2C56%2C93%2C71%2C70%2C42%2C114%2C69%2C66%2C60%2C92%2C85%2C35%2C115%2C32%2C87%2C10%2C135
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/images/common/ico-check-active.svg?av=9
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/images/common/ico-close-black.svg?av=9
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/images/user/ico-sns-kakao.png
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/images/user/ico-sns-naver.png
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/images/user/ico-sns-facebook.png
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/images/common/logo-smile.svg
+ ┗ 🟢 HTTP 200 - https://stage-m.mrblue.com/images/user/info-bubble-join-event.svg?av=9
+ ┗ 🟢 HTTP 200 - https://connect.facebook.net/en_US/sdk.js
+ ┗ 🟢 HTTP 200 - https://www.facebook.com/tr/?id=211817962486013&ev=PageView&dl=https%3A%2F%2Fstage-m.mrblue.com%2Flogin%2F&rl=&if=false&ts=1752828095745&sw=412&sh=915&v=2.9.216&r=stable&ec=0&o=4126&fbp=fb.1.1752828095744.587754025734242910&ler=empty&cdl=API_unavailable&plt=0&it=1752828095713&coo=false&eid=8054f5a4-0527-4539-8164-9c255fcff34e&chmd=&chpv=13&chfv=undefined&exp=r1&rqm=GET
+ ┗ 🟢 HTTP 200 - https://connect.facebook.net/en_US/sdk.js?hash=7c2b38aabe617d97be7ac496053cbbdf
+ ┗ 🟢 HTTP 200 - https://www.facebook.com/privacy_sandbox/topics/registration/?id=211817962486013
+ ┗ 🟢 HTTP 200 - https://www.facebook.com/privacy_sandbox/pixel/register/trigger/?id=211817962486013&ev=PageView&dl=https%3A%2F%2Fstage-m.mrblue.com%2Flogin%2F&rl=&if=false&ts=1752828095745&sw=412&sh=915&v=2.9.216&r=stable&ec=0&o=4126&fbp=fb.1.1752828095744.587754025734242910&ler=empty&cdl=API_unavailable&plt=0&it=1752828095713&coo=false&eid=8054f5a4-0527-4539-8164-9c255fcff34e&chmd=&chpv=13&chfv=undefined&exp=r1&rqm=FGET
+ ┗ 🟢 HTTP 200 - https://www.facebook.com/x/oauth/status?client_id=231319150871726&input_token&origin=2&redirect_uri=https%3A%2F%2Fstage-m.mrblue.com%2Flogin%2F&sdk=joey&wants_cookie_data=true
+ ┗ 🟢 HTTP 200 - https://www.googletagmanager.com/gtm.js?id=GTM-PHZ9T8NK
+ ┗ 🟢 HTTP 200 - https://analytics.tiktok.com/i18n/pixel/events.js?sdkid=CHS2573C77UFB57TFGLG&lib=ttq
+ ┗ 🟢 HTTP 200 - https://www.googletagmanager.com/gtag/js?id=G-ZSVKR8YE0G&cx=c&gtm=45He57g1v9170573436za200&tag_exp=101509157~103116026~103200004~103233427~103351869~103351871~104684208~104684211~104732253~104732255~104908321~104908323~104952206~104952208~104964065~104964067~104967141~104967143
+ ┗ 🟢 HTTP 200 - https://www.googletagmanager.com/static/service_worker/57f0/sw_iframe.html?origin=https%3A%2F%2Fstage-m.mrblue.com
+ ┗ 🟢 HTTP 200 - https://analytics.tiktok.com/i18n/pixel/static/main.MTc3NWUxZTAxOA.js
+ ┗ 🟢 HTTP 200 - https://analytics.tiktok.com/i18n/pixel/static/identify_ecbed230.js
+ ┗ ⚠️ HTTP 204 - https://analytics.google.com/g/collect?v=2&tid=G-ZSVKR8YE0G&gtm=45je57g1v9170576890z89170573436za200zb9170573436&_p=1752828095642&_gaz=1&gcd=13l3l3l3l1l1&npa=0&dma=0&tag_exp=101509157~103116026~103200004~103233427~103351869~103351871~104684208~104684211~104732253~104732255~104908321~104908323~104964065~104964067~104967141~104967143&cid=625917046.1752828096&ul=en-us&sr=412x915&ir=1&uaa=arm&uab=64&uafvl=Not)A%253BBrand%3B8.0.0.0%7CChromium%3B138.0.7204.23&uamb=1&uam=&uap=Android&uapv=13&uaw=0&are=1&frm=0&pscdl=noapi&_prs=ok&_eu=EA&_s=1&dt=%EB%A1%9C%EA%B7%B8%EC%9D%B8&dl=https%3A%2F%2Fstage-m.mrblue.com%2Flogin%2F&sid=1752828096&sct=1&seg=0&en=page_view&_fv=1&_nsi=1&_ss=2&ep.ep_page_1depth=%EB%A1%9C%EA%B7%B8%EC%9D%B8&ep.ep_page_url=https%3A%2F%2Fstage-m.mrblue.com%2Flogin%2F&up.up_channeltype=MOWEB&up.up_membertype=%EB%B9%84%ED%9A%8C%EC%9B%90&up.up_accessday=%EA%B8%88&up.up_loginyn=N&tfd=1448
+ ┗ 🟢 HTTP 200 - https://www.google.com/measurement/conversion/?random=1752828096460&cv=11&tid=G-ZSVKR8YE0G&fst=1752828096460&fmt=6&en=session_start&gtm=45je57g1v9170576890z89170573436za200zb9170573436&gcd=13l3l3l3l1l1&dma=0&tag_exp=101509157~103116026~103200004~103233427~103351869~103351871~104684208~104684211~104732253~104732255~104908321~104908323~104964065~104964067~104967141~104967143&u_w=412&u_h=915&url=https%3A%2F%2Fstage-m.mrblue.com%2Flogin%2F&gacid=625917046.1752828096&frm=0&tiba=%EB%AF%B8%EC%8A%A4%ED%84%B0%EB%B8%94%EB%A3%A8%20%EB%AA%A8%EB%B0%94%EC%9D%BC%20-%20%EC%9B%B9%ED%88%B0%2C%20%EB%A7%8C%ED%99%94%2C%20%EC%86%8C%EC%84%A4%2C%20%EB%AC%B4%EB%A3%8C%EC%9B%B9%ED%88%B0%2C%20%EB%AC%B4%EB%A3%8C%EB%A7%8C%ED%99%94%2C%20%EB%AC%B4%EB%A3%8C%EC%86%8C%EC%84%A4&npa=0&pscdl=noapi&auid=1816601725.1752828096&uaa=arm&uab=64&uafvl=Not)A%253BBrand%3B8.0.0.0%7CChromium%3B138.0.7204.23&uamb=1&uam=&uap=Android&uapv=13&uaw=0
+ ┗ ⚠️ HTTP 204 - https://stats.g.doubleclick.net/g/collect?v=2&tid=G-ZSVKR8YE0G&cid=625917046.1752828096&gtm=45je57g1v9170576890z89170573436za200zb9170573436&aip=1&dma=0&gcd=13l3l3l3l1l1&npa=0&frm=0&tag_exp=101509157~103116026~103200004~103233427~103351869~103351871~104684208~104684211~104732253~104732255~104908321~104908323~104964065~104964067~104967141~104967143
+ ┗ 🟢 HTTP 200 - https://analytics.tiktok.com/api/v2/pixel
+ ┗ 🟢 HTTP 200 - https://www.google.com/ccm/collect?en=page_view&dl=https%3A%2F%2Fstage-m.mrblue.com%2Flogin%2F&scrsrc=www.googletagmanager.com&frm=0&rnd=2092476213.1752828096&dt=%EB%AF%B8%EC%8A%A4%ED%84%B0%EB%B8%94%EB%A3%A8%20%EB%AA%A8%EB%B0%94%EC%9D%BC%20-%20%EC%9B%B9%ED%88%B0%2C%20%EB%A7%8C%ED%99%94%2C%20%EC%86%8C%EC%84%A4%2C%20%EB%AC%B4%EB%A3%8C%EC%9B%B9%ED%88%B0%2C%20%EB%AC%B4%EB%A3%8C%EB%A7%8C%ED%99%94%2C%20%EB%AC%B4%EB%A3%8C&auid=1816601725.1752828096&navt=n&npa=0&gtm=45He57g1v9170573436za200&gcd=13l3l3l3l1l1&dma=0&tag_exp=101509157~103116026~103200004~103233427~103351869~103351871~104684208~104684211~104732253~104732255~104908321~104908323~104952206~104952208~104964065~104964067~104967141~104967143&tft=1752828096193&tfd=1120&apve=1&apvf=f
+ ┗ 🟢 HTTP 200 - https://analytics-ipv6.tiktokw.us/ipv6/enrich_ipv6
+ ┗ 🟢 HTTP 200 - https://www.google.co.kr/ads/ga-audiences?v=1&t=sr&slf_rd=1&_r=4&tid=G-ZSVKR8YE0G&cid=625917046.1752828096&gtm=45je57g1v9170576890z89170573436za200zb9170573436&aip=1&dma=0&gcd=13l3l3l3l1l1&npa=0&frm=0&tag_exp=101509157~103116026~103200004~103233427~103351869~103351871~104684208~104684211~104732253~104732255~104908321~104908323~104964065~104964067~104967141~104967143&tag_exp=101509157~103116026~103200004~103233427~103351869~103351871~104684208~104684211~104732253~104732255~104908321~104908323~104964065~104964067~104967141~104967143&z=1725334862
+ ┗ 🟢 HTTP 200 - https://analytics.tiktok.com/api/v2/pixel/act
+ ┗ ⚠️ HTTP 204 - https://analytics.google.com/g/collect?v=2&tid=G-ZSVKR8YE0G&gtm=45je57g1v9170576890za200zb9170573436&_p=1752828095642&gcd=13l3l3l3l1l1&npa=0&dma=0&tag_exp=101509157~103116026~103200004~103233427~103351869~103351871~104684208~104684211~104732253~104732255~104908321~104908323~104964065~104964067~104967141~104967143&cid=625917046.1752828096&ul=en-us&sr=412x915&ir=1&uaa=arm&uab=64&uafvl=Not)A%253BBrand%3B8.0.0.0%7CChromium%3B138.0.7204.23&uamb=1&uam=&uap=Android&uapv=13&uaw=0&are=1&frm=0&pscdl=noapi&_eu=EEAAAAQ&_s=2&dt=%EB%A1%9C%EA%B7%B8%EC%9D%B8&dl=https%3A%2F%2Fstage-m.mrblue.com%2Flogin%2F&sid=1752828096&sct=1&seg=0&en=scroll&ep.ep_page_1depth=%EB%A1%9C%EA%B7%B8%EC%9D%B8&ep.ep_page_url=https%3A%2F%2Fstage-m.mrblue.com%2Flogin%2F&epn.percent_scrolled=90&_et=7&tfd=6476
